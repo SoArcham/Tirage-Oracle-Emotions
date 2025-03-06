@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tirage de mon émotion du jour</title>
+    <style type="text/css">
+
+    *{
+        box-sizing: border-box;
+    }
+
+    img {        
+        max-width: 100%;
+        height: auto;
+    }
+
+	body {
+        font-family: 'Open sans', Times, sans serif;
+        margin: 0;
+        color: black;
+        text-align: center;
+    }
+
+    h1 {
+        font-family: 'Garamond', Times, sans serif;
+        margin: 0;
+        color: #dc718f;
+        text-align: center;
+    }
+
+    p {
+        font-family: 'Garamond';
+        text-align: justify;
+    }
+
+    #footer p {
+        font-size: 0.8rem;
+        font-family: 'Arial';
+        text-align: center;
+        position: relative;
+        bottom:0;
+        width:100vw;
+        display:inline-block;
+        vertical-align:top;
+        color: rgb(100, 124, 119);
+    }
+
+    .hide {
+    display: none;
+    }
+
+    button {
+        font-family: 'Open sans', sans serif;
+        background: #8ed1cf;
+        border:1px solid #439989;
+        border-radius: 50px;
+        padding:5px 15px;
+        color:white;
+        font-size: 1em;
+        cursor: pointer;
+    }
+
+    #tirage {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding-left: 0;
+    }
+
+    #tirage li {
+    flex-basis: 30%;
+    }
+	
+    #tirage li img {
+        max-height: 50vh;
+        min-height: 20vh;
+        object-fit: contain;
+    }
+	
+    #tirage li h2 {
+        text-transform: uppercase;
+        font-family: 'Garamond';
+        font-size: 1rem;
+    }
+
+    #feuille p {
+        text-align: center;
+        font-family: 'Open sans', Times, sans serif;
+        font-size : 1rem;
+        color: black;
+    }
+
+    @media screen and (max-width:610px){
+        #tirage{
+            width:100%;
+            flex-direction: column;
+        }
+
+        h2{
+            color :#03947c;
+        }
+
+        li {
+            overflow: scroll;
+        }
+    }
+
+    </style>
+</head>
+<body>
+	<div id="feuille">
+		<img src="images/Feuillage-CFNE.png" alt="Feuillage-CFNE.png" id="feuille-img" style="width: 156px; height: 160px; transform: translate(0px, 0px);">
+		<h1>Tirage des émotions avec l'Oracle "Les essentielles"</h1>
+		<p>Lancez le tirage afin de découvrir votre émotion du jour.<br />
+        <i><b>Cliquez 1 fois sur le bouton pour effectuer le tirage.</b></i></p>
+    </div>
+		<button id="go">✿ Mon émotion du jour ✿</button>
+		<button id="replay" class="hide">⟲ Faire un autre tirage ⟲</button>
+		<ul id="tirage">
+			<li><img src="images/dos.png" /></li>
+		</ul>
+
+    <script>
+	//déclaration des variables
+let html = ``;
+let card, nb;
+
+function getRandomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+ 
+function atIndex(number, set) {
+    let count = 2;
+    for (let line of set) {
+        if (count  === (number)) {
+            return line;
+        }
+        count++;
+    }
+}
+
+function displayCard() {
+    html += `<li><img src="images/${nb - 1}.png" alt="${card.nom}"> 
+    <h2>${card.num} - ${card.nom}</h2>
+    <p>${card.signification}</p>
+    </li>`;
+    document.querySelector("ul#tirage").innerHTML = html;
+}
+
+function pickCard() {
+    do {
+
+        nb = getRandomInteger(1, (arcanes.size));
+    } while (tirage.has(nb))
+
+    tirage.add(nb);
+
+    card = atIndex(nb, arcanes);
+
+    displayCard();
+
+    if (tirage.size == 1) {
+        document.querySelector("#go").classList.add("hide");
+        document.querySelector("#replay").classList.remove("hide");
+    }
+}
+
+
+let tirage = new Set(); //variable qui contiendra les numéros des cartes tirées
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelector("#go").addEventListener('click', pickCard);
+
+    document.querySelector("#replay").addEventListener('click', function () {
+        window.location.reload();
+    });
+});
+	</script>
+    <script>
+	let arcanes = new Set([
+    {
+        num: "1",
+        nom: "BASILIC",
+        signification: `Vous venez de tirer la carte Basilic, il est désormais temps d'intégrer son enseignement. Pour cela, réalisez une méditation pour prendre du recul et ralentir le rythme. Prenez le temps de vous asseoir au calme, respirez profondément, ne pensez à rien, et concentrez-vous uniquement sur votre respiration. Commencez l’exercice en récitant le Mantra :
+        « Je me libère de tout ressentiment »
+        Puis, comptez cinq secondes sur l’inspiration, puis à nouveau cinq secondes sur l’expiration. Pratiquez cette alternance pendant au moins trois minutes, tout en répétant régulièrement le Mantra.`
+    },
+    {
+        num: "2",
+        nom: "BERGAMOTE",
+        signification: `Vous venez de tirer la carte Bergamote, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra, il vous mènera vers les rayons de soleil qui illumineront votre vie :
+        « Je suis ma lumière intérieure »`
+    },
+    {
+        num: "3",
+        nom: "BOIS DE ROSE",
+        signification: `Vous venez de tirer la carte Bois de rose, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra, il reboostera votre état d’esprit :
+        « Je trouve du réconfort »`
+    },
+    {
+        num: "4",
+        nom: "CAMOMILLE ROMAINE",
+        signification: `Vous venez de tirer la carte Camomille romaine, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra qui vous viendra en aide en apaisant vos émotions :
+        « Je calme mes angoisses »`
+    },
+    {
+        num: "5",
+        nom: "CANNELLE",
+        signification: `Vous venez de tirer la carte Cannelle, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à augmenter votre potentiel :
+        « Je stimule mes sens »`
+    },
+    {
+        num: "6",
+        nom: "CEDRE",
+        signification: `Vous venez de tirer la carte Cèdre, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’un rituel de connexion avec vos ancêtres, récitez à haute voix ou dans votre tête, son Mantra qui activera la connexion avec les énergies de l’au-delà :
+        « Je me connecte à la sagesse ancestrale »`
+    },
+    {
+        num: "7",
+        nom: "CISTE",
+        signification: `Vous venez de tirer la carte Ciste, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à vous connecter à votre propre source :
+        « Je cicatrise »`
+    },
+    {
+        num: "8",
+        nom: "CITRON",
+        signification: `Vous venez de tirer la carte Citron, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra, il viendra stimuler positivement vos émotions :
+        « Je mets du peps dans ma vie »`
+    },
+    {
+        num: "9",
+        nom: "CYPRES",
+        signification: `L’ours est l’animal totem de la guérison et de l’introspection. Si vous tirez sa carte cela signifie que vous avez besoin de son pouvoir afin de vous retrouver en solitaire pour faire le point. La présence de l’ours dans votre tirage vous amène à vous recentrer, à fortifier vos limites mais surtout à vous réapproprier un espace vital.
+        L’esprit de l’ours vous appelle à pratiquer la méditation et l’introspection et ce afin de retrouver l’équilibre en tout point. Il est temps pour vous d’entamer le chemin de la guérison en vous recentrant sur vos propres besoins et en prenant enfin soin de vous émotionnellement.`
+    },
+    {
+        num: "10",
+        nom: "EPINETTE",
+        signification: `Vous venez de tirer la carte Epinette, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra qui vous connectera à votre énergie la plus profonde :
+        « Je booste ma puissance intérieure »`
+    },
+    {
+        num: "11",
+        nom: "GERANIUM",
+        signification: `Vous venez de tirer la carte Géranium, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’un rituel de pensée positive, récitez à haute voix ou dans votre tête ou écrivez sur un carnet, son Mantra qui vous accompagnera sur le chemin d’une vie épanouie :
+        « J’attire le positif »`
+    },
+    {
+        num: "12",
+        nom: "GINGEMBRE",
+        signification: `Vous venez de tirer la carte Gingembre, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra :
+        « J’attise mon feu intérieur »`
+    },
+    {
+        num: "13",
+        nom: "HELICRYSE",
+        signification: `Vous venez de tirer la carte Hélichryse, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra, il agira tel un pansement :
+        « Je panse les bleus de mon âme »`
+    },
+    {
+        num: "14",
+        nom: "JASMIN",
+        signification: `Vous venez de tirer la carte Jasmin, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra qui facilitera la régulation de vos émotions :
+        « Je suis la force tranquille »`
+    },
+    {
+        num: "15",
+        nom: "LAURIER NOBLE",
+        signification: `Le flamant rose est l’animal totem de l’audace. Il vous amène à partir à la rencontre de vos émotions en vous incitant à oser et à aller au-delà de vos peurs. Si vous tirez sa carte cela signifie que son pouvoir vous aidera à consacrer votre énergie à faire de votre vie, un véritable succès !
+        Tout comme le laurier noble, le Flamant rose vous accompagnera dans votre cheminement spirituel et personnel et transformera votre état d’esprit pour rendre possible ce qui vous paraissait impossible.`
+    },
+    {
+        num: "16",
+        nom: "LAVANDE VRAIE",
+        signification: `Vous venez de tirer la carte Lavande, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’un rituel de purification, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à nettoyer vos émotions :
+        « Je purifie mon aura »`
+    },
+    {
+        num: "17",
+        nom: "MANDARINE ROUGE",
+        signification: `La loutre est l’animal totem qui vous rappelle qu’il est important de rester connecter à votre enfant intérieur. Si vous tirez sa carte cela signifie que vous devez vous reconnecter à la conscience la plus pure de vos émotions mais aussi à celles des autres.
+        L’esprit de la loutre vous appelle à faire preuve de curiosité et d’espièglerie afin de regarder le monde sous un nouveau regard et vous lancer dans de nouveaux défis sans crainte. Enfin grâce à la loutre, vous avancerez en toute confiance sur le chemin de la vie.`
+    },
+    {
+        num: "18",
+        nom: "MARJOLAINE",
+        signification: `La baleine est l’animal totem de l’harmonie et de la paix intérieure qui vous accompagnera pour comprendre l’impact de vos émotions sur vous, sur vos proches mais aussi sur vos actions.
+        Si vous tirez sa carte cela signifie qu’il est temps de relâcher la pression émotionnelle que vous subissez actuellement. Et si vous remontiez à la surface pour relâcher le trop plein et prendre un souffle nouveau ?
+        En d’autres termes, le pouvoir de la baleine vous appelle à lâcher prise, à écouter votre vérité intérieure et à voguer en toute quiétude vers votre destinée.`
+    },
+    {
+        num: "19",
+        nom: "MENTHE POIVREE",
+        signification: `L’aigle est l’animal totem de la vision claire. Si vous tirez sa carte, cela signifie qu’il vous invite à prendre de la hauteur pour une vision plus globale de la situation dans laquelle vous vous trouvez.
+        L’aigle peut vous accompagner pour faire preuve d’observation et de finesse dans vos choix de vie en évitant toute prise de décision à la hâte, bien au contraire l’aigle vous rappelle qu’il est important de prendre du recul et de se concentrer avant de plonger corps et âme dans vos futurs projets.`
+    },
+    {
+        num: "20",
+        nom: "MUSCADE",
+        signification: `Vous venez de tirer la carte Muscade, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à apaiser vos tensions intérieures :
+        « Je digère mes rancoeurs »`
+    },
+    {
+        num: "21",
+        nom: "MYRTE",
+        signification: `Le dauphin est l’animal totem de la communication et de la coopération. Si vous tirez sa carte cela signifie que vous devez faire preuve d’honnêteté envers les autres mais surtout envers vous-même.
+        Par sa capacité d’écoute et de communication, le dauphin vous rappelle l’importance de la solidarité et de l’entraide.
+        Enfin, le pouvoir du dauphin vous enseigne que l’empathie et la tolérance font toujours meilleur ménage que la colère et la violence. Soyez à l’écoute de ceux qui vous entourent, et exprimez-vous avec bienveillance quelle que soit la situation.`
+    },
+    {
+        num: "22",
+        nom: "NARD",
+        signification: `Vous venez de tirer la carte Nard, il est désormais temps d’intégrer son enseignement. Pour cela, à l’occasion d’une méditation profonde ou d’un rituel de purification des chakras, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à vous connecter au moment présent :
+        « Je m’enracine, ici et maintenant »`
+    },
+	{
+        num: "23",
+        nom: "NIAOULI",
+        signification: `Le rhinocéros est l’animal totem de la protection mais aussi de la solidité. Si sa carte apparait dans votre tirage cela signifie que vous devez reprendre confiance en vous et en votre capacité à surmonter les épreuves.
+        L’énergie et la puissance du rhinocéros seront vos meilleures alliées pour faire preuve de détermination dans tout ce que vous entreprenez, et cela sans peur de l’échec. Enfin le pouvoir du rhinocéros vous apportera assurance et robustesse, en éloignant toutes confusions mentales et en vous apportant une solide ténacité.`
+    },
+	{
+        num: "24",
+        nom: "NEROLI",
+        signification: `Vous venez de tirer la carte Néroli, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à canaliser vos émotions du moment :
+        « J’apaise mes émotions »`
+    },
+	{
+        num: "25",
+        nom: "OLIBAN",
+        signification: `La chouette est l’animal totem spirituel par excellence. Elle est le symbole de la connexion mystique et intuitive avec le plan supérieur permettant ainsi de voir au-delà du voile qui sépare les deux Mondes. Si sa carte apparait dans votre tirage cela signifie que vous ne devez plus avoir peur de ce qui se cache ou que vous devez ouvrir les yeux sur une situation que vous ne percevez pas encore clairement.
+        L’énergie de la chouette vous invite alors à faire preuve de discernement en prenant de la hauteur sur la situation... Puis à suivre votre intuition et uniquement celle-ci. Petit à petit les vérités se dévoileront, permettant ainsi d’apaiser et libérer votre esprit par la prise d’une décision claire et réfléchie.`
+    },
+	{
+        num: "26",
+        nom: "PATCHOULI",
+        signification: `Le loup est l’animal totem de l’instinct. Si vous tirez sa carte cela signifie que vous avez besoin de son pouvoir pour vous reconnecter avec votre «moi» le plus profond et pour vous défaire du contrôle que vous entretenez sur vous-même.
+        L’énergie du loup vous enseigne que vous êtes la seule personne à pouvoir vous octroyer la liberté et la vie à laquelle vous aspirez. Vous avez le droit d’étendre votre territoire spirituel aussi loin que vous le dicte votre instinct. Le loup vous met aussi en garde sur vos propres émotions qui peuvent parfois être dévorantes et vous déstabiliser. Pour y remédier, ré ancrez-vous !`
+    },
+	{
+        num: "27",
+        nom: "PETIT GRAIN",
+        signification: `Le koala est l’animal totem de la quiétude ainsi que de la protection maternelle. Si sa carte apparait dans votre tirage cela signifie que vous êtes en demande de douceur et d’attention dans votre vie comme le ferait un parent attentionné envers ses enfants.
+        A travers son énergie, l’esprit du koala vous enseigne que quoi qu’il arrive il veille sur vous en créant autour de vous un véritable cocon de douceur. Vous pouvez alors avancer dans la vie sereinement et apaiser vos émotions pour retrouver l’harmonie dans vos relations sociales. Aussi, le koala est l’animal de la maitrise du temps, par sa présence il vous invite à ralentir et à contempler tout ce qui vous entoure pour retrouver un sens à votre vie.`
+    },
+	{
+        num: "28",
+        nom: "PIN",
+        signification: `Vous venez de tirer la carte Pin, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’un rituel de purification, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à vous ré oxygéner émotionnellement :
+        « J’accueille la pureté de l’air »`
+    },
+	{
+        num: "29",
+        nom: "ROMARIN CINEOLE",
+        signification: `Vous venez de tirer la carte Romarin cinéole, il est désormais temps d’intégrer son enseignement. Pour cela, lors d’une méditation introspective ou lors d’un rituel de purification, récitez à haute voix ou dans votre tête, son Mantra qui agira sur votre mental :
+        « J’ai l’esprit libéré »`
+    },
+	{
+        num: "30",
+        nom: "ROSE DE DAMAS",
+        signification: `Le chien est l’animal totem de l’amour inconditionnel et de la fidélité. Si sa carte apparait lors d’un tirage cela signifie que vous êtes invité à laisser entrer les valeurs de l’amour, quelles qu’elles soient, dans votre vie.
+        L’esprit du chien vous enseigne aussi à être à l’écoute de ceux qui vous entourent et à leurs venir en aide. C’est aussi un fort enseignement pour mettre en pratique le principe du pardon. Enfin, le chien totem vous délivre le message suivant : «pour obtenir le respect et l’amour de l’autre, il est important de se l’accorder à soi-même».`
+    },
+	{
+        num: "31",
+        nom: "SANTAL",
+        signification: `Vous venez de tirer la carte Santal, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation d’ancrage, récitez à haute voix ou dans votre tête, son Mantra qui favorisera l’enracinement :
+        « Je suis en paix »`
+    },
+	{
+        num: "32",
+        nom: "SAUGE SCLAREE",
+        signification: `Vous venez de tirer la carte Sauge sclarée, il est désormais temps d’intégrer son enseignement. Pour cela, lors d’une méditation ou lors d’un rituel de purification, récitez à haute voix ou dans votre tête, son Mantra qui aidera à la concentration :
+        « J’appelle la sagesse »`
+    },
+	{
+        num: "33",
+        nom: "THYM VULGAIRE",
+        signification: `Le lion est l’animal totem du courage et de la bravoure. S’il vous apparait lors d’un tirage, cela signifie que vous avez toutes les cartes en main pour avancer dans l’adversité et que vous saurez affronter avec noblesse tous les obstacles qui se présenteront à vous.
+        L’esprit du lion vous enseigne que la détermination n’a de limite qu’en votre capacité de passer à l’action. C’est d’ailleurs pour cela que le lion vous pousse à sortir de votre zone de confort, en repoussant vos barrières pour aller à la rencontre de votre propre pouvoir intérieur.
+        A travers l’énergie du lion, et de son rugissement puissant, vous trouverez le courage de vous libérer de ce qui vous entrave.`
+    },
+	{
+        num: "34",
+        nom: "VERVEINE",
+        signification: `Vous venez de tirer la carte Verveine, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation ou d’un rituel de purification, récitez à haute voix ou dans votre tête, son Mantra qui harmonisera vos émotions et votre esprit créatif :
+        « Je désembrume mon esprit »`
+    },
+	{
+        num: "35",
+        nom: "VETIVER",
+        signification: `Vous venez de tirer la carte Vétiver, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation d’ancrage, récitez à haute voix ou dans votre tête, son Mantra qui vous aidera à garder les pieds sur terre :
+        « J’ai le sens des réalités »`
+    },
+	{
+        num: "36",
+        nom: "YLANG YLANG",
+        signification: `Vous venez de tirer la carte Ylang Ylang, il est désormais temps d’intégrer son enseignement. Pour cela, tout au long de la journée ou lors d’une méditation de relaxation, récitez à haute voix ou dans votre tête, son Mantra qui favorisera le relâchement de votre corps mais surtout de votre mental :
+        « Je laisse aller mes sens »`
+    },
+]);
+
+	</script>
+</body>
+<footer id="footer"><p><i><B>ESO |</B> Studio créatif by www.phanouel.com</i></p></footer>
+</html>
